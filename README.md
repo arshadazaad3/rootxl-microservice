@@ -14,6 +14,21 @@ The RootXL Microservice employs a microservice architecture that leverages:
 
 ## Getting Started
 
+### Engines
+
+Ensure you are using MongoDB <b>v7</b> or above for compatibility.
+
+The MongoDB setup is included as a Git submodule. Please initialize and update the submodule before running the service.
+
+Ensure the following Node.js and npm versions are installed:
+
+```json
+"engines": {
+  "node": ">=20.6.1",
+  "npm": ">=8.0.0"
+}
+```
+
 Follow these steps to get the service running for local development:
 
 1. Install dependencies:
