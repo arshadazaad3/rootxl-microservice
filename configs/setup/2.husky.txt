@@ -1,0 +1,2 @@
+After NPM I execute below command to give permission to husky commands
+chmod ug+x .husky/*

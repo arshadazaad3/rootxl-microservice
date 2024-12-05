@@ -1,0 +1,8 @@
+cd src/database
+git fetch
+git checkout dev
+git pull --ff
+cd ../..
+git fetch
+git checkout dev
+git pull --ff
