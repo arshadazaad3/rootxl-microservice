@@ -5,13 +5,12 @@ import { NestFactory, Reflector } from '@nestjs/core';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { useContainer } from 'class-validator';
 import { WinstonModule } from 'nest-winston';
+import { LoggerOptions } from 'winston';
 
 import { AppModule } from './app.module';
 import validationOptions from './utils/validation-options';
 import { AllConfigType } from './config/config.type';
-import { ResolvePromisesInterceptor } from './utils/serializer.interceptor';
 import CustomLogger from './lib/logger/customLogger';
-import { LoggerOptions } from 'winston';
 
 async function bootstrap() {
   const customLoggerService = new CustomLogger();
@@ -34,14 +33,6 @@ async function bootstrap() {
 
   app.useGlobalInterceptors(new ClassSerializerInterceptor(app.get(Reflector)));
 
-  // Commented Out due to mongodb id not transformed
-  // app.useGlobalInterceptors(
-  //   // ResolvePromisesInterceptor is used to resolve promises in responses because class-transformer can't do it
-  //   // https://github.com/typestack/class-transformer/issues/549
-  //   new ResolvePromisesInterceptor(),
-  //   new ClassSerializerInterceptor(app.get(Reflector))
-  // );
-
   const options = new DocumentBuilder()
     .setTitle('rootxl-microservice')
     .setDescription('API docs')
@@ -57,6 +48,9 @@ async function bootstrap() {
 
   const port = configService.getOrThrow('app.port', { infer: true });
   await app.listen(port);
-  logger.log(`app listening on port: ${port} `);
+  logger.log(
+    `app: ${configService.getOrThrow('app.name', { infer: true })} listening on port: ${port} | env: ${configService.getOrThrow('app.nodeEnv', { infer: true })}`
+  );
 }
+
 void bootstrap();

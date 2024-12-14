@@ -1,7 +1,5 @@
 import { Inject, Injectable, Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { Model } from 'mongoose';
-import { InjectModel } from '@nestjs/mongoose';
 import { AmqpConnection, RabbitRPC } from '@golevelup/nestjs-rabbitmq';
 import { Cache } from 'cache-manager';
 import { HttpService } from '@nestjs/axios';
@@ -9,13 +7,9 @@ import { CACHE_MANAGER } from '@nestjs/cache-manager';
 import { EventEmitter2 } from '@nestjs/event-emitter';
 import { v4 as uuidv4 } from 'uuid';
 
-import { PrimaryConnection } from '@db/connections';
-import { UserSchemaClass } from '@db/repositories/core';
-
 import { AllConfigType } from 'config/config.type';
 import { QueueExchanges, QueueNames, QueueRoutingKeys } from 'lib/rabbitmq';
 
-import { UsersService } from '../users/users.service';
 import { DEV_EVENTS } from './constants/dev.constants';
 
 @Injectable()
@@ -31,15 +25,11 @@ export class DevService {
     private eventEmitter: EventEmitter2,
 
     @Inject(CACHE_MANAGER)
-    private cacheService: Cache,
-
-    @InjectModel(UserSchemaClass.name, PrimaryConnection)
-    private readonly userModel: Model<UserSchemaClass>
+    private cacheService: Cache
   ) {}
 
-  async testMethod() {
-    const data = await this.userModel.find({});
-    return { status: 'ok', data };
+  testMethod() {
+    return { status: 'ok' };
   }
 
   async testPublishQueueMessage(body: any): Promise<any> {
